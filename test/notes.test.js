@@ -7,7 +7,9 @@ const mongoose = require('mongoose');
 const { TEST_MONGODB_URI } = require('../config');
 
 const Note = require('../models/note');
+const Folder = require('../models/folder');
 const seedNotes = require('../db/seed/notes');
+const seedFolders = require('../db/seed/folders');
 
 const expect = chai.expect;
 
@@ -19,7 +21,9 @@ describe('Noteful API - Notes', function () {
   });
 
   beforeEach(function () {
-    return Note.insertMany(seedNotes);
+    const insertNotes = Note.insertMany(seedNotes);
+    const insertFolders = Folder.insertMany(seedFolders);
+    return Promise.all([insertNotes, insertFolders]);
   });
 
   afterEach(function () {
@@ -44,7 +48,7 @@ describe('Noteful API - Notes', function () {
           expect(res.body).to.have.length(data.length);
           res.body.forEach(function (item) {
             expect(item).to.be.a('object');
-            expect(item).to.have.keys('id', 'title', 'content', 'created');
+            expect(item).to.have.keys('id', 'title', 'content', 'created', 'folderId');
           });
         });
     });
@@ -97,7 +101,7 @@ describe('Noteful API - Notes', function () {
           expect(res).to.be.json;
 
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.keys('id', 'title', 'content', 'created');
+          expect(res.body).to.have.keys('id', 'title', 'content', 'created', 'folderId');
 
           expect(res.body.id).to.equal(data.id);
           expect(res.body.title).to.equal(data.title);
@@ -193,7 +197,7 @@ describe('Noteful API - Notes', function () {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
-          expect(res.body).to.have.keys('id', 'title', 'content', 'created');
+          expect(res.body).to.have.keys('id', 'title', 'content', 'created', 'folderId');
 
           expect(res.body.id).to.equal(data.id);
           expect(res.body.title).to.equal(updateItem.title);
