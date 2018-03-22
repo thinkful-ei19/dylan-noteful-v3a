@@ -100,7 +100,7 @@ router.delete('/folders/:id', (req, res, next) => {
 
   const { id } = req.params;
 
-  const removeFolder = Folder.findByIdAndRemove(id);
+  const removeFolder = Folder.findByIdAndRemove({ _id: id });
   const removeNotes = Note.updateMany(
     { folderId: id },
     { '$unset': { 'folderId': '' } }
