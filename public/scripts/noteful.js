@@ -322,7 +322,6 @@ const noteful = (function () {
 
       store.currentNote = {};
 
-      // console.log('Delete a tag, coming soon...');
       api.remove(`/api/tags/${tagId}`)
         .then(() => {
           return api.search('/api/tags');

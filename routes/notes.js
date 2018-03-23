@@ -68,7 +68,7 @@ router.post('/notes', (req, res, next) => {
 
   if (tags) {
     tags.forEach(tag => {
-      if (!mongoose.Types.ObjectId.isValid(tag.id)) {
+      if (!mongoose.Types.ObjectId.isValid(tag)) {
         const err = new Error('The `id` is not valid');
         err.status = 400;
         return next(err);
@@ -109,8 +109,6 @@ router.put('/notes/:id', (req, res, next) => {
   if (mongoose.Types.ObjectId.isValid(folderId)) {
     updateItem.folderId = folderId;
   }
-
-  console.log(tags);
 
 
   if (tags) {
