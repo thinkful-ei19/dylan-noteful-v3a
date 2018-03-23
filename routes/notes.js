@@ -91,6 +91,7 @@ router.post('/notes', (req, res, next) => {
 router.put('/notes/:id', (req, res, next) => {
   const { id } = req.params;
   const { title, content, folderId, tags } = req.body;
+  const updateItem = { title, content, tags };
 
   /***** Never trust users - validate input *****/
   if (!title) {
@@ -105,7 +106,12 @@ router.put('/notes/:id', (req, res, next) => {
     return next(err);
   }
 
-  if (mongoose.Types.ObjectId.isValid(folderId)) updateItem.folderId = folderId;
+  if (mongoose.Types.ObjectId.isValid(folderId)) {
+    updateItem.folderId = folderId;
+  }
+
+  console.log(tags);
+
 
   if (tags) {
     tags.forEach(tag => {
@@ -117,7 +123,6 @@ router.put('/notes/:id', (req, res, next) => {
     });
   }
 
-  const updateItem = { title, content, tags };
   const options = { new: true };
 
   Note.findByIdAndUpdate(id, updateItem, options)
