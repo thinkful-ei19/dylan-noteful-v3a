@@ -66,13 +66,15 @@ router.post('/notes', (req, res, next) => {
     return next(err);
   }
 
-  tags.forEach(tag => {
-    if (!mongoose.Types.ObjectId.isValid(tag.id)) {
-      const err = new Error('The `id` is not valid');
-      err.status = 400;
-      return next(err);
-    }
-  });
+  if (tags) {
+    tags.forEach(tag => {
+      if (!mongoose.Types.ObjectId.isValid(tag.id)) {
+        const err = new Error('The `id` is not valid');
+        err.status = 400;
+        return next(err);
+      }
+    });
+  }
 
   const newItem = { title, content, folderId, tags };
 
@@ -103,13 +105,15 @@ router.put('/notes/:id', (req, res, next) => {
     return next(err);
   }
 
-  tags.forEach(tag => {
-    if (!mongoose.Types.ObjectId.isValid(tag.id)) {
-      const err = new Error('The `id` is not valid');
-      err.status = 400;
-      return next(err);
-    }
-  });
+  if (tags) {
+    tags.forEach(tag => {
+      if (!mongoose.Types.ObjectId.isValid(tag.id)) {
+        const err = new Error('The `id` is not valid');
+        err.status = 400;
+        return next(err);
+      }
+    });
+  }
 
   const updateItem = { title, content, folderId, tags };
   const options = { new: true };
