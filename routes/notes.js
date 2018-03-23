@@ -105,9 +105,7 @@ router.put('/notes/:id', (req, res, next) => {
     return next(err);
   }
 
-  if (mongoose.Types.ObjectId.isValid(folderId)) {
-    updateItem.folderId = folderId;
-  }
+  if (mongoose.Types.ObjectId.isValid(folderId)) updateItem.folderId = folderId;
 
   if (tags) {
     tags.forEach(tag => {
